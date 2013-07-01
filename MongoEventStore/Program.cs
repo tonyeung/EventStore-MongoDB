@@ -13,46 +13,39 @@ namespace MongoEventStore
     {
         static void Main(string[] args)
         {
-            var store = Wireup.Init()
-                .UsingMongoPersistence("EventStore", new DocumentObjectSerializer())
-                    .InitializeStorageEngine()
-                    .UsingJsonSerialization()
-                        .Compress()
-                .UsingSynchronousDispatchScheduler()
-                    .DispatchTo(new CommitDispatcher())
-
-                .Build();
-
-            var myMessage = new MyMessage() { CustomerId = Guid.NewGuid(), MessageId = Guid.NewGuid() };
-
-
-            using (store)
+            var quit = true;
+            do
             {
-                using (var stream = store.CreateStream(myMessage.CustomerId))
-                {
-                    stream.Add(new EventMessage { Body = myMessage });
-                    stream.CommitChanges(myMessage.MessageId);
-                }
+                CRUD();
+
+                Console.WriteLine("press enter to continue, or q to quit");
+                quit = Console.ReadKey().KeyChar.ToString() != "q";
+                Console.WriteLine();
+            } while (quit);
+        }
+
+        static void CRUD()
+        {
+
+            var repo = new EventStoreRepository<Identities>();
+
+            Console.WriteLine("C to create new object, R to rebuild object");
+            var Key = Console.ReadKey().KeyChar.ToString();
+            Console.WriteLine();
+
+            if (Key == "c")
+            {
+                var identity = new Identities.Builder().WithNewID().Build();
+                repo.Save(identity);
+                Console.WriteLine(identity.Id);
             }
-        } 
+            else
+            {
+                var identity = repo.GetById(Guid.Parse("dcdf08ba-913b-4395-bfd8-ce6d2b0da718"));
+                Console.WriteLine(identity.Id);
+
+            }
+        }
     }
 
-    public class MyMessage
-    {
-        public Guid CustomerId { get; set; }
-        public Guid MessageId { get; set; }
-    }
-
-    public sealed class CommitDispatcher : IDispatchCommits
-    {
-        
-        public void Dispatch(Commit commit)
-        {
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
-    } 
 }

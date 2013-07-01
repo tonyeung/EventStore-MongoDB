@@ -34,17 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EventStore, Version=3.2.0.0, Culture=neutral, PublicKeyToken=7735eb81c0bd9948, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EventStore.3.2.0.14\lib\net40\EventStore.dll</HintPath>
+    <Reference Include="EventStore">
+      <HintPath>..\packages\EventStore.3.2.0.32\lib\net40\EventStore.dll</HintPath>
     </Reference>
-    <Reference Include="EventStore.Persistence.MongoPersistence, Version=3.2.0.0, Culture=neutral, PublicKeyToken=7735eb81c0bd9948, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EventStore.Persistence.MongoPersistence.3.2.0.14\lib\net40\EventStore.Persistence.MongoPersistence.dll</HintPath>
+    <Reference Include="EventStore.Persistence.MongoPersistence">
+      <HintPath>..\packages\EventStore.Persistence.MongoPersistence.3.2.0.32\lib\net40\EventStore.Persistence.MongoPersistence.dll</HintPath>
     </Reference>
-    <Reference Include="EventStore.Serialization.Json, Version=3.2.0.0, Culture=neutral, PublicKeyToken=7735eb81c0bd9948, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EventStore.Serialization.Json.3.2.0.14\lib\net40\EventStore.Serialization.Json.dll</HintPath>
+    <Reference Include="EventStore.Serialization.Json">
+      <HintPath>..\packages\EventStore.Serialization.Json.3.2.0.32\lib\net40\EventStore.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson, Version=1.8.1.20, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -54,8 +51,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\mongocsharpdriver.1.8.1\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
+    <Reference Include="ReflectionMagic">
+      <HintPath>..\packages\ReflectionMagic.2.0.0\lib\net40\ReflectionMagic.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +64,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AggregateRoot.cs" />
+    <Compile Include="EventStoreRepository.cs" />
+    <Compile Include="Identity.cs" />
+    <Compile Include="IdentityCreated.cs" />
+    <Compile Include="IEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
