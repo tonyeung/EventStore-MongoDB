@@ -1,9 +1,11 @@
 ﻿using EventStore;
 using EventStore.Dispatcher;
 using EventStore.Serialization;
+using MongoDB.Bson.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -16,6 +18,15 @@ namespace MongoEventStore
 
         private IStoreEvents WireupEventStore()
         {
+            //register the class map
+            var types = Assembly.GetAssembly(typeof(IEvent))
+                    .GetTypes()
+                    .Where(type => type.IsSubclassOf(typeof(IEvent)));
+
+            foreach (var t in types)
+                BsonClassMap.LookupClassMap(t); 
+
+            // initialize the eventstore
             return Wireup.Init()
                 .LogToOutputWindow()
                 .UsingMongoPersistence("EventStoreSample", new DocumentObjectSerializer())
